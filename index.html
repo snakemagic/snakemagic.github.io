@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Snake Magic</title>
+<meta name="description" content="SnakeMagic.com — a scripted, indie-style comedy series about the absurdity of internet content. Comedy videos for the Internet.">
+<meta property="og:title" content="Snake Magic — Comedy Videos for the Internet">
+<meta property="og:description" content="Your eyes look hungry. Feed them with some jokes.">
+<meta property="og:image" content="img/ep/episode-0.jpg">
+<link rel="icon" href="img/triangle.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: loud, cheap-on-purpose public-access comedy; a little sleazy, never corporate.
+   IDEA: a late-night cable TV channel: the cobra is the station ID, episodes are the program guide.
+   PICTURE: the cobra logo glowing on a black set with sparkles, Episode 0 card beside it.
+   COLOUR and TYPE: black set, cobra red, sticker yellow; Bungee signage titles, Work Sans body.
+   LAYOUT: sticky top bar, hero, featured episodes grid, searchable archive, about/cast, follow band. */
+:root{color-scheme:dark;--bg:#0c0a0a;--panel:#171313;--line:#2c2423;--ink:#f6efe4;--mute:#b9ad9f;--red:#d8321f;--yel:#f6cf2f}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "Work Sans",system-ui,sans-serif;overflow-x:clip}
+a{color:var(--yel)}img{display:block;max-width:100%}
+h1,h2,h3{font-family:Bungee,Impact,sans-serif;font-weight:400;line-height:1.05;text-wrap:balance;margin:0}
+h2{font-size:clamp(30px,4.5vw,46px)}h3{font-size:19px;line-height:1.2}
+.wrap{max-width:1240px;margin:0 auto}
+.band{padding:clamp(40px,6vw,88px) max(5vw,16px)}
+.preview{display:none;background:var(--yel);color:#111;font-size:14px;text-align:center;padding:8px 16px}
+.is-preview .preview{display:block}
+/* top bar */
+header{position:sticky;top:0;z-index:20;background:rgba(12,10,10,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;gap:16px;padding:10px max(5vw,16px);flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:Bungee,sans-serif;font-size:20px}
+.brand img{width:34px;height:34px;object-fit:contain}
+nav{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
+nav a{color:var(--ink);text-decoration:none;font-weight:500;padding:10px 12px;border-radius:999px}
+nav a:hover,nav a:focus-visible{background:var(--panel);color:var(--yel);outline:none}
+/* hero */
+.hero{position:relative;background:radial-gradient(ellipse at 30% 40%,#3a0f0a 0,#120b0a 55%,var(--bg) 80%);overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(24px,4vw,56px);align-items:center}
+.cobra{position:relative;justify-self:center;width:min(100%,520px)}
+.cobra img{filter:drop-shadow(0 18px 40px rgba(216,50,31,.45));animation:sway 6s ease-in-out infinite;transform-origin:50% 90%}
+.spark{position:absolute;width:22px;height:22px;fill:var(--yel);animation:blink 2.4s infinite}
+@keyframes sway{50%{transform:rotate(-2.5deg) translateY(-6px)}}
+@keyframes blink{50%{opacity:.25;transform:scale(.7)}}
+.tag{color:var(--yel);font-weight:700;letter-spacing:.02em;margin:0 0 10px}
+.hero h1{font-size:clamp(40px,6.4vw,76px);margin-bottom:18px}
+.hero h1 span{color:var(--red)}
+.lede{font-size:clamp(18px,2vw,21px);color:var(--mute);max-width:34em;margin:0 0 26px}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 22px;border-radius:999px;font-weight:700;text-decoration:none;border:2px solid var(--yel);color:var(--yel)}
+.btn.solid{background:var(--yel);color:#111}
+.btn:hover,.btn:focus-visible{background:var(--red);border-color:var(--red);color:#fff;outline:none}
+/* episode 0 */
+.ep0{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:clamp(16px,3vw,28px)}
+.ep0 figure{margin:0;position:relative;border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:#000}
+.ep0 figure img{width:100%;height:100%;object-fit:cover}
+.soon{position:absolute;left:12px;top:12px;background:rgba(0,0,0,.78);color:var(--yel);font-size:14px;font-weight:700;padding:6px 12px;border-radius:999px}
+.ep0 p{color:var(--mute);margin:12px 0 0}
+/* grids */
+.head{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+.head p{color:var(--mute);margin:8px 0 0;max-width:40em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,270px),1fr));gap:22px}
+.card{display:block;text-decoration:none;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:transform .2s,border-color .2s}
+.card:hover,.card:focus-visible{transform:translateY(-4px);border-color:var(--red);outline:none}
+.thumb{position:relative;aspect-ratio:16/9;background:#000}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.play{position:absolute;inset:0;display:grid;place-items:center;opacity:0;transition:opacity .2s;background:rgba(0,0,0,.35)}
+.play svg{width:58px;height:58px}
+.card:hover .play,.card:focus-visible .play{opacity:1}
+.dur{position:absolute;right:8px;bottom:8px;background:rgba(0,0,0,.8);font-size:13px;font-weight:700;padding:2px 7px;border-radius:5px;white-space:nowrap}
+.card .txt{padding:14px 16px 18px}
+.card p{margin:6px 0 0;color:var(--mute);font-size:15px}
+.src{font-size:13px;color:var(--mute);margin-top:10px;display:block}
+.small .card .txt{padding:10px 12px 14px}.small h3{font-family:"Work Sans",sans-serif;font-weight:700;font-size:16px}
+.small .grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:16px}
+.search{display:flex;gap:10px;align-items:center}
+.search input{font:16px "Work Sans",sans-serif;min-height:46px;width:min(320px,80vw);padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--ink)}
+.search input:focus{outline:2px solid var(--yel);outline-offset:2px}
+.empty{color:var(--mute);display:none}
+.archive{background:#100d0d;border-block:1px solid var(--line)}
+/* about */
+.about .wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,5vw,64px)}
+.about p{color:var(--mute);margin:16px 0 0}
+.cast{display:grid;gap:18px}
+blockquote{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+blockquote p{margin:0!important;color:var(--ink)!important;font-style:italic}
+blockquote cite{display:block;margin-top:10px;font-style:normal;font-family:Bungee,sans-serif;color:var(--yel)}
+/* follow */
+.follow{background:var(--red);color:#fff;text-align:center}
+.follow h2{color:#fff}.follow p{margin:12px auto 26px;max-width:36em}
+.follow .btns{justify-content:center}.follow .btn{border-color:#fff;color:#fff}.follow .btn.solid{background:#111;border-color:#111;color:var(--yel)}
+footer{padding:28px max(5vw,16px);color:var(--mute);font-size:14px;text-align:center}
+/* player */
+dialog{width:min(960px,94vw);padding:0;border:0;border-radius:14px;background:#000;color:var(--ink)}
+dialog::backdrop{background:rgba(0,0,0,.85)}
+.frame{aspect-ratio:16/9}.frame iframe{width:100%;height:100%;border:0;display:block}
+.dbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 14px}
+.dbar button{font:700 15px "Work Sans",sans-serif;min-height:44px;padding:0 18px;border-radius:999px;border:0;background:var(--yel);color:#111;cursor:pointer}
+@media(max-width:800px){.hero .wrap,.ep0,.about .wrap{grid-template-columns:minmax(0,1fr)}.cobra{width:min(78%,360px)}}
+@media(max-width:600px){nav{margin-left:0;width:100%;justify-content:space-between}nav a{padding:8px 6px;font-size:15px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="preview">Preview copy. Here the videos open on YouTube or Vimeo; on the live site they play right on the page.</div>
+<header><div class="wrap">
+  <a class="brand" href="#top"><img src="img/triangle.png" alt="">Snake Magic</a>
+  <nav><a href="#episodes">Episodes</a><a href="#archive">Archive</a><a href="#about">About</a><a href="#follow">Follow</a></nav>
+</div></header>
+
+<main id="top">
+<section class="hero band"><div class="wrap">
+  <div class="cobra">
+    <img src="img/cobra.png" alt="Snake Magic cobra logo" width="720" height="632">
+    <svg class="spark" style="left:2%;top:8%" viewBox="0 0 24 24"><path d="M12 0l3 9 9 3-9 3-3 9-3-9-9-3 9-3z"/></svg>
+    <svg class="spark" style="right:4%;top:2%;animation-delay:.8s" viewBox="0 0 24 24"><path d="M12 0l3 9 9 3-9 3-3 9-3-9-9-3 9-3z"/></svg>
+    <svg class="spark" style="right:0;top:52%;animation-delay:1.6s" viewBox="0 0 24 24"><path d="M12 0l3 9 9 3-9 3-3 9-3-9-9-3 9-3z"/></svg>
+  </div>
+  <div>
+    <p class="tag">Comedy videos for the Internet</p>
+    <h1>Your eyes look <span>hungry.</span></h1>
+    <p class="lede">Feed them with some jokes. Now you've got the fever. You're feeling that magic! SnakeMagic!</p>
+    <div class="btns"><a class="btn solid" href="#episodes">Watch the episodes</a><a class="btn" href="https://www.youtube.com/@snakemagicdotcom" target="_blank" rel="noopener">YouTube channel</a></div>
+  </div>
+</div></section>
+
+<section class="band" id="episodes"><div class="wrap">
+  <div class="ep0">
+    <figure><img src="img/ep/episode-0.jpg" alt="Snake Magic Episode 0 title card" loading="lazy"><span class="soon">Trailer coming back soon</span></figure>
+    <div>
+      <p class="tag">Episode 0</p>
+      <h2>Scripted comedy will never be the same.</h2>
+      <p>Once Luke meets his muse, a homeless man named Douglas, they conceptualize the next great video idea for SnakeMagic.com. Joining forces with Levi and his accountant/production manager Books, the team is reminded that producing content isn't easy. Finding the right location may be more trouble than it's worth.</p>
+    </div>
+  </div>
+  <div class="head" style="margin-top:clamp(48px,6vw,80px)"><div><h2>The episodes</h2><p>The SnakeMagic.com originals. Click any one to watch.</p></div></div>
+  <div class="grid" id="feat"></div>
+</div></section>
+
+<section class="band archive small" id="archive"><div class="wrap">
+  <div class="head"><div><h2>The vault</h2><p>Every video on the Snake Magic YouTube channel, from VagMeds commercials to Sad Tree.</p></div>
+    <label class="search"><span class="sr" hidden>Search videos</span><input id="q" type="search" placeholder="Search the vault" aria-label="Search videos"></label></div>
+  <div class="grid" id="all"></div><p class="empty" id="none">No videos match that. Try "Sad Tree".</p>
+</div></section>
+
+<section class="band about" id="about"><div class="wrap">
+  <div>
+    <p class="tag">About the show</p>
+    <h2>A satire about internet content and the people who make it.</h2>
+    <p>SnakeMagic.com is a scripted, indie-style comedy series. Hell-bent on creating the next big viral video, Luke, Levi and the unpredictable SnakeMagic.com production crew set out on a misguided odyssey towards internet fame.</p>
+    <p>Each episode the gang works hard to produce a video, but running alongside the train wreck are the characters that are driving the show. It is their idiosyncrasies and dysfunctional relationships that shine a light on the absurdist nature of the human condition at the heart of the show's humor.</p>
+  </div>
+  <div class="cast">
+    <blockquote><p>"Luke is an asshole for the ages. Luke has absolutely no bearing on his life. A total and complete waste of time, Luke has decided that he is better off putting nonsense comedy on the internet than being a productive member of society. What a loser. I really don't like him."</p><cite>Luke</cite></blockquote>
+    <blockquote><p>"This is Snake Magic straight out of Compton, nobody got us, ain't nothin' hotter than this, gonna rock your socks to the breaka-breaka dawn, get the friction on. Peace."</p><cite>Levi</cite></blockquote>
+  </div>
+</div></section>
+
+<section class="band follow" id="follow"><div class="wrap">
+  <h2>Let us know how much you hate everything.</h2>
+  <p>Or tell us we're cool. Whatevs! Subscribe, comment and stalk us here:</p>
+  <div class="btns"><a class="btn solid" href="https://www.youtube.com/@snakemagicdotcom" target="_blank" rel="noopener">YouTube</a><a class="btn" href="https://vimeo.com/user44535827" target="_blank" rel="noopener">Vimeo</a></div>
+</div></section>
+</main>
+<footer>© Snake Magic. Made with no budget and even less shame.</footer>
+
+<dialog id="player" aria-label="Video player"><div class="frame" id="frame"></div><div class="dbar"><span id="ptitle"></span><button id="close" type="button">Close</button></div></dialog>
+
+<script>
+{
+const YT='https://www.youtube.com/watch?v=',VM='https://vimeo.com/';
+const feat=[
+ ['Pizza Delivery','Snakemagic.com started a pizza delivery service. Enjoy your delicious moments!','pizza-delivery','yt','wingKJ2NVDc','0:37'],
+ ['Poison',"Levi's idea to poison Luke to boost online views is not going so well.",'poison','yt','uopn92xLTRg','2:31'],
+ ['SnakeMagic.com vs 24','Remember Jack and Tony from the world of 24? We sure do.','vs-24','yt','PynCjfuc568','2:01'],
+ ['Rockstar','Pongo and Weevil take their Rock Band to the streets.','rockstar','yt','2_vocKtt3u0','1:30'],
+ ['House F**king','This guy knows how to show his house a good time!!!!','house','yt','_Ree1VCBpcM','1:13'],
+ ['Bad At Lines','This guy is Bad At Lines.','bad-at-lines','yt','vCWO0l29aGo','1:49'],
+ ['Cunty Nature',"Boc Choy's newest video Cunty Nature is a Global Phenomenon.",'cunty-nature','vm','154067333','2:01'],
+ ["Spectre Crappin'",'Trick or Treat. Smell your Feet. These Ghosts have had too much to eat.','spectre','vm','154064865','1:36']];
+const all=`rJSUiH7vT-c|and so i watch you play those drums|6:34
+pBWDAgakjm4|Play those Drums|3:04
+9KKM3G6l8WE|Rockstar (Remastered)|1:28
+NI2up1l093k|Roto Clipper Nightmare|0:31
+u0vuuwzfI1E|Best Super Bowl Commercial Ever|2:19
+svHf59btbMU|Sad Tree 2011|0:57
+za2pvFd_Lz4|Instant Classics - Portal|2:16
+buTXHRxmuug|Best Music Video Ever!|2:08
+RpSbqEu_zew|CGI Bees|0:52
+AUzbd1T5bxE|F**k, Finally! (SnakeMagic is Back!)|1:33
+HH88Ck40B0Q|Sad Tree 2010 - Unbelievable Christmas Murder Caught On Video|1:14
+_xpEH66jD9w|paulsac - starring Bones and Hammer|0:34
+eaoN-7X2fCc|Harriott Hotels Presents: English as a Second Language - Disc 4|2:13
+UjiEYwq7gS4|Sportscaster Jim Knox Shows Off His Ball Sweat|0:39
+fw9pTLzkCWQ|SnakeMagic vs. Inception|1:09
+S1vaCE44uMo|Instant Classics - Mass Effect|2:15
+uopn92xLTRg|Poison|2:31
+wingKJ2NVDc|Pizza Delivery|0:37
+PynCjfuc568|SnakeMagic Vs. '24'|2:01
+aAVWUmcyHoE|Subliminal Messages|0:36
+PnEwtHsbfXY|Greatest Hits: Season 1|1:14
+jrIo_czSoQk|Scary Movie Trailer|1:41
+4OgtcHV8bGs|SnakeMagic Vs. Jurassic Park|0:40
+uqKbAJkswYQ|Second Commercial For VagMeds.com|0:17
+uCYOodCpUyU|Commercial For VagMeds.com|0:16
+rC5ksrLxiM0|Cock Shaped Cloud Forms over Austin, Texas|0:42
+syOm9Y0RsGA|I Hate You Netflix|2:00
+JNyRmMX6OcU|Good Camera Bad Camera [Part 2]|1:40
+vCWO0l29aGo|Bad At Lines|1:49
+jLQ8q-8cNmE|More Towers!|0:40
+Anrgc9cCxf4|Over The Edge (Happy Cinco de Mayo)|0:43
+L3wzekQph-0|Kelly Ripa|0:38
+zz0WWDVXWdg|Good Camera Bad Camera [Part 1]|1:02
+FpWbfcnIrNo|The World's Smartest Man|0:31
+4oe2afr_SLg|Recording Machine|0:43
+m5q8QCFDxvE|House Fucking (Screwed)|1:13
+2_vocKtt3u0|Rockstar|1:30
+DvWt326ldPs|Hey!|0:45
+tdBKEg01Z0g|Gordon Ramsey|0:12
+_Ree1VCBpcM|House Fucking|1:13
+ply1_3xY0fo|Pudding|1:21`.split('\n').map(l=>l.split('|'));
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const play='<span class="play"><svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="29" fill="#f6cf2f"/><path d="M24 18l18 12-18 12z" fill="#111"/></svg></span>';
+const card=(t,img,src,id,dur,desc)=>`<a class="card" href="${src==='vm'?VM:YT}${id}" target="_blank" rel="noopener" data-src="${src}" data-id="${id}" data-t="${esc(t)}"><div class="thumb"><img src="${img}" alt="" loading="lazy">${play}<span class="dur">${dur}</span></div><div class="txt"><h3>${esc(t)}</h3>${desc?`<p>${esc(desc)}</p><span class="src">on ${src==='vm'?'Vimeo':'YouTube'}</span>`:''}</div></a>`;
+document.getElementById('feat').innerHTML=feat.map(f=>card(f[0],'img/ep/'+f[2]+'.jpg',f[3],f[4],f[5],f[1])).join('');
+const box=document.getElementById('all');
+box.innerHTML=all.map(v=>card(v[1],'img/yt/'+v[0]+'.jpg','yt',v[0],v[2])).join('');
+const q=document.getElementById('q'),none=document.getElementById('none');
+q.addEventListener('input',()=>{const s=q.value.trim().toLowerCase();let n=0;for(const c of box.children){const hit=!s||c.dataset.t.toLowerCase().includes(s);c.hidden=!hit;n+=hit}none.style.display=n?'none':'block'});
+// Inline player on the real site; plain links where embeds are blocked (preview).
+const embedOK=!/claude|anthropic/i.test(location.hostname)&&location.protocol!=='file:';
+if(!embedOK)document.body.classList.add('is-preview');
+const dlg=document.getElementById('player'),frame=document.getElementById('frame');
+const shut=()=>{frame.innerHTML='';if(dlg.open)dlg.close()};
+document.getElementById('close').addEventListener('click',shut);
+dlg.addEventListener('close',()=>{frame.innerHTML=''});
+dlg.addEventListener('click',e=>{if(e.target===dlg)shut()});
+document.addEventListener('click',e=>{
+  const a=e.target.closest('a.card');if(!a||!embedOK||!dlg.showModal)return;
+  e.preventDefault();
+  const url=a.dataset.src==='vm'?`https://player.vimeo.com/video/${a.dataset.id}?autoplay=1&dnt=1`:`https://www.youtube-nocookie.com/embed/${a.dataset.id}?autoplay=1&rel=0`;
+  frame.innerHTML=`<iframe src="${url}" title="${a.dataset.t}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+  document.getElementById('ptitle').textContent=a.dataset.t;dlg.showModal();
+});
+}
+</script>
+</body>
+</html>
