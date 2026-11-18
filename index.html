@@ -113,7 +113,7 @@ dialog::backdrop{background:rgba(0,0,0,.85)}
 <div class="preview">Preview copy. Here the videos open on YouTube or Vimeo; on the live site they play right on the page.</div>
 <header><div class="wrap">
   <a class="brand" href="#top"><img src="img/triangle.png" alt="">Snake Magic</a>
-  <nav><a href="#episodes">Episodes</a><a href="#archive">Archive</a><a href="#about">About</a><a href="#follow">Contact</a></nav>
+  <nav><a href="#episodes">Episodes</a><a href="#archive">Archive</a><a href="#about">About</a><a href="#follow">Follow</a></nav>
 </div></header>
 
 <main id="top">
@@ -160,8 +160,8 @@ dialog::backdrop{background:rgba(0,0,0,.85)}
 
 <section class="band follow" id="follow"><div class="wrap">
   <h2>Let us know how much you hate everything.</h2>
-  <p>Or tell us we're cool. Whatevs! Shoot us a message, or subscribe, comment and stalk us here:</p>
-  <div class="btns"><a class="btn solid" id="mail" href="#follow">Email us</a><a class="btn" href="https://www.youtube.com/@snakemagicdotcom" target="_blank" rel="noopener">YouTube</a><a class="btn" href="https://vimeo.com/user44535827" target="_blank" rel="noopener">Vimeo</a></div>
+  <p>Or tell us we're cool. Whatevs! Subscribe, comment and stalk us here:</p>
+  <div class="btns"><a class="btn solid" href="https://www.youtube.com/@snakemagicdotcom" target="_blank" rel="noopener">YouTube</a><a class="btn" href="https://vimeo.com/user44535827" target="_blank" rel="noopener">Vimeo</a></div>
 </div></section>
 </main>
 <footer>© Snake Magic. Made with no budget and even less shame.</footer>
@@ -247,8 +247,6 @@ const ishut=()=>{iv.pause();if(idlg.open)idlg.close()};
 document.getElementById('introClose').addEventListener('click',ishut);
 idlg.addEventListener('click',e=>{if(e.target===idlg)ishut()});
 idlg.addEventListener('close',()=>{iv.pause();if(!still)bgv.play().catch(()=>{})});
-// Email: assembled here so scrapers don't harvest it.
-const m=['lucaspierce','hotmail.com'];document.getElementById('mail').href='mailto:'+m.join('@')+'?subject=Snake%20Magic';
 // Inline player on the real site; plain links where embeds are blocked (preview).
 const embedOK=!/claude|anthropic/i.test(location.hostname)&&location.protocol!=='file:';
 if(!embedOK)document.body.classList.add('is-preview');
