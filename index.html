@@ -14,7 +14,7 @@
 <style>
 /* VOICE: loud, cheap-on-purpose public-access comedy; a little sleazy, never corporate.
    IDEA: a late-night cable TV channel: the cobra is the station ID, episodes are the program guide.
-   PICTURE: the cobra logo glowing on a black set with sparkles, Episode 0 card beside it.
+   PICTURE: the show's own cobra intro (smoke, lightning, explosion) playing behind the hero.
    COLOUR and TYPE: black set, cobra red, sticker yellow; Bungee signage titles, Work Sans body.
    LAYOUT: sticky top bar, hero, featured episodes grid, searchable archive, about/cast, follow band. */
 :root{color-scheme:dark;--bg:#0c0a0a;--panel:#171313;--line:#2c2423;--ink:#f6efe4;--mute:#b9ad9f;--red:#d8321f;--yel:#f6cf2f}
@@ -38,12 +38,14 @@ nav a{color:var(--ink);text-decoration:none;font-weight:500;padding:10px 12px;bo
 nav a:hover,nav a:focus-visible{background:var(--panel);color:var(--yel);outline:none}
 /* hero */
 .hero{position:relative;background:radial-gradient(ellipse at 30% 40%,#3a0f0a 0,#120b0a 55%,var(--bg) 80%);overflow:hidden}
-.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(24px,4vw,56px);align-items:center}
-.cobra{position:relative;justify-self:center;width:min(100%,520px)}
-.cobra img{filter:drop-shadow(0 18px 40px rgba(216,50,31,.45));animation:sway 6s ease-in-out infinite;transform-origin:50% 90%}
-.spark{position:absolute;width:22px;height:22px;fill:var(--yel);animation:blink 2.4s infinite}
-@keyframes sway{50%{transform:rotate(-2.5deg) translateY(-6px)}}
-@keyframes blink{50%{opacity:.25;transform:scale(.7)}}
+.hero{min-height:min(88vh,760px);display:flex;align-items:center}
+.hero .bgv{position:absolute;top:0;right:0;width:66%;height:100%;object-fit:cover;object-position:50% 50%}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 0,var(--bg) 34%,rgba(12,10,10,.55) 46%,rgba(12,10,10,0) 62%),linear-gradient(0deg,var(--bg) 0,transparent 22%)}
+.hero .wrap{position:relative;z-index:1;width:100%}
+.hero .copy{max-width:620px}
+.hero h1 a{color:var(--red);text-decoration:none;border-bottom:4px dotted var(--red)}
+.hero h1 a:hover,.hero h1 a:focus-visible{color:var(--yel);border-color:var(--yel);outline:none}
+.btn.ghost{border-color:var(--ink);color:var(--ink);background:rgba(0,0,0,.35);cursor:pointer;font:inherit;font-weight:700}
 .tag{color:var(--yel);font-weight:700;letter-spacing:.02em;margin:0 0 10px}
 .hero h1{font-size:clamp(40px,6.4vw,76px);margin-bottom:18px}
 .hero h1 span{color:var(--red)}
@@ -87,18 +89,22 @@ nav a:hover,nav a:focus-visible{background:var(--panel);color:var(--yel);outline
 blockquote{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
 blockquote p{margin:0!important;color:var(--ink)!important;font-style:italic}
 blockquote cite{display:block;margin-top:10px;font-style:normal;font-family:Bungee,sans-serif;color:var(--yel)}
+blockquote.castcard{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);gap:18px;align-items:center;padding:14px}
+.castcard video{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;background:#000}
+@media(max-width:520px){blockquote.castcard{grid-template-columns:minmax(0,1fr)}}
 /* follow */
 .follow{background:var(--red);color:#fff;text-align:center}
 .follow h2{color:#fff}.follow p{margin:12px auto 26px;max-width:36em}
 .follow .btns{justify-content:center}.follow .btn{border-color:#fff;color:#fff}.follow .btn.solid{background:#111;border-color:#111;color:var(--yel)}
 footer{padding:28px max(5vw,16px);color:var(--mute);font-size:14px;text-align:center}
 /* player */
+#introdlg video{display:block;width:100%;aspect-ratio:16/9;background:#000}
 dialog{width:min(960px,94vw);padding:0;border:0;border-radius:14px;background:#000;color:var(--ink)}
 dialog::backdrop{background:rgba(0,0,0,.85)}
 .frame{aspect-ratio:16/9}.frame iframe{width:100%;height:100%;border:0;display:block}
 .dbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 14px}
 .dbar button{font:700 15px "Work Sans",sans-serif;min-height:44px;padding:0 18px;border-radius:999px;border:0;background:var(--yel);color:#111;cursor:pointer}
-@media(max-width:800px){.hero .wrap,.ep0,.about .wrap{grid-template-columns:minmax(0,1fr)}.cobra{width:min(78%,360px)}}
+@media(max-width:800px){.ep0,.about .wrap{grid-template-columns:minmax(0,1fr)}.hero .bgv{width:100%}.hero::after{background:linear-gradient(0deg,var(--bg) 0,rgba(12,10,10,.85) 50%,rgba(12,10,10,.25) 100%)}.hero{align-items:flex-end}}
 @media(max-width:600px){nav{margin-left:0;width:100%;justify-content:space-between}nav a{padding:8px 6px;font-size:15px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
@@ -107,22 +113,16 @@ dialog::backdrop{background:rgba(0,0,0,.85)}
 <div class="preview">Preview copy. Here the videos open on YouTube or Vimeo; on the live site they play right on the page.</div>
 <header><div class="wrap">
   <a class="brand" href="#top"><img src="img/triangle.png" alt="">Snake Magic</a>
-  <nav><a href="#episodes">Episodes</a><a href="#archive">Archive</a><a href="#about">About</a><a href="#follow">Follow</a></nav>
+  <nav><a href="#episodes">Episodes</a><a href="#archive">Archive</a><a href="#about">About</a><a href="#follow">Contact</a></nav>
 </div></header>
 
 <main id="top">
-<section class="hero band"><div class="wrap">
-  <div class="cobra">
-    <img src="img/cobra.png" alt="Snake Magic cobra logo" width="720" height="632">
-    <svg class="spark" style="left:2%;top:8%" viewBox="0 0 24 24"><path d="M12 0l3 9 9 3-9 3-3 9-3-9-9-3 9-3z"/></svg>
-    <svg class="spark" style="right:4%;top:2%;animation-delay:.8s" viewBox="0 0 24 24"><path d="M12 0l3 9 9 3-9 3-3 9-3-9-9-3 9-3z"/></svg>
-    <svg class="spark" style="right:0;top:52%;animation-delay:1.6s" viewBox="0 0 24 24"><path d="M12 0l3 9 9 3-9 3-3 9-3-9-9-3 9-3z"/></svg>
-  </div>
-  <div>
+<section class="hero band"><video class="bgv" id="bgv" muted loop playsinline preload="metadata" poster="media/intro-poster.jpg" aria-hidden="true"><source src="media/intro.mp4" type="video/mp4"></video><div class="wrap">
+  <div class="copy">
     <p class="tag">Comedy videos for the Internet</p>
-    <h1>Your eyes look <span>hungry.</span></h1>
+    <h1>Your eyes look <a href="https://www.youtube.com/watch?v=6oKUTOLSeMM" target="_blank" rel="noopener">hungry.</a></h1>
     <p class="lede">Feed them with some jokes. Now you've got the fever. You're feeling that magic! SnakeMagic!</p>
-    <div class="btns"><a class="btn solid" href="#episodes">Watch the episodes</a><a class="btn" href="https://www.youtube.com/@snakemagicdotcom" target="_blank" rel="noopener">YouTube channel</a></div>
+    <div class="btns"><a class="btn solid" href="#episodes">Watch the episodes</a><button class="btn ghost" id="introBtn" type="button">&#9654; Play the intro (sound on)</button></div>
   </div>
 </div></section>
 
@@ -153,19 +153,20 @@ dialog::backdrop{background:rgba(0,0,0,.85)}
     <p>Each episode the gang works hard to produce a video, but running alongside the train wreck are the characters that are driving the show. It is their idiosyncrasies and dysfunctional relationships that shine a light on the absurdist nature of the human condition at the heart of the show's humor.</p>
   </div>
   <div class="cast">
-    <blockquote><p>"Luke is an asshole for the ages. Luke has absolutely no bearing on his life. A total and complete waste of time, Luke has decided that he is better off putting nonsense comedy on the internet than being a productive member of society. What a loser. I really don't like him."</p><cite>Luke</cite></blockquote>
-    <blockquote><p>"This is Snake Magic straight out of Compton, nobody got us, ain't nothin' hotter than this, gonna rock your socks to the breaka-breaka dawn, get the friction on. Peace."</p><cite>Levi</cite></blockquote>
+    <blockquote class="castcard"><video muted loop playsinline preload="metadata" poster="media/cast-luke.jpg" aria-label="Luke intro clip"><source src="media/cast-luke.mp4" type="video/mp4"></video><div><p>"Luke is an asshole for the ages. Luke has absolutely no bearing on his life. A total and complete waste of time, Luke has decided that he is better off putting nonsense comedy on the internet than being a productive member of society. What a loser. I really don't like him."</p><cite>Luke</cite></div></blockquote>
+    <blockquote class="castcard"><video muted loop playsinline preload="metadata" poster="media/cast-levi.jpg" aria-label="Levi intro clip"><source src="media/cast-levi.mp4" type="video/mp4"></video><div><p>"This is Snake Magic straight out of Compton, nobody got us, ain't nothin' hotter than this, gonna rock your socks to the breaka-breaka dawn, get the friction on. Peace."</p><cite>Levi</cite></div></blockquote>
   </div>
 </div></section>
 
 <section class="band follow" id="follow"><div class="wrap">
   <h2>Let us know how much you hate everything.</h2>
-  <p>Or tell us we're cool. Whatevs! Subscribe, comment and stalk us here:</p>
-  <div class="btns"><a class="btn solid" href="https://www.youtube.com/@snakemagicdotcom" target="_blank" rel="noopener">YouTube</a><a class="btn" href="https://vimeo.com/user44535827" target="_blank" rel="noopener">Vimeo</a></div>
+  <p>Or tell us we're cool. Whatevs! Shoot us a message, or subscribe, comment and stalk us here:</p>
+  <div class="btns"><a class="btn solid" id="mail" href="#follow">Email us</a><a class="btn" href="https://www.youtube.com/@snakemagicdotcom" target="_blank" rel="noopener">YouTube</a><a class="btn" href="https://vimeo.com/user44535827" target="_blank" rel="noopener">Vimeo</a></div>
 </div></section>
 </main>
 <footer>© Snake Magic. Made with no budget and even less shame.</footer>
 
+<dialog id="introdlg" aria-label="Snake Magic intro"><video id="introv" controls playsinline preload="none" poster="media/intro-poster.jpg"><source src="media/intro.mp4" type="video/mp4"></video><div class="dbar"><span>The Snake Magic intro</span><button id="introClose" type="button">Close</button></div></dialog>
 <dialog id="player" aria-label="Video player"><div class="frame" id="frame"></div><div class="dbar"><span id="ptitle"></span><button id="close" type="button">Close</button></div></dialog>
 
 <script>
@@ -229,6 +230,19 @@ const box=document.getElementById('all');
 box.innerHTML=all.map(v=>card(v[1],'img/yt/'+v[0]+'.jpg','yt',v[0],v[2])).join('');
 const q=document.getElementById('q'),none=document.getElementById('none');
 q.addEventListener('input',()=>{const s=q.value.trim().toLowerCase();let n=0;for(const c of box.children){const hit=!s||c.dataset.t.toLowerCase().includes(s);c.hidden=!hit;n+=hit}none.style.display=n?'none':'block'});
+// Background + cast loops: only autoplay when motion is OK, pause when off-screen.
+const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const loops=[document.getElementById('bgv'),...document.querySelectorAll('.castcard video')];
+if(!still){const io=new IntersectionObserver(es=>es.forEach(e=>{e.isIntersecting?e.target.play().catch(()=>{}):e.target.pause()}));loops.forEach(v=>io.observe(v))}
+// Intro with sound
+const idlg=document.getElementById('introdlg'),iv=document.getElementById('introv'),bgv=document.getElementById('bgv');
+document.getElementById('introBtn').addEventListener('click',()=>{bgv.pause();iv.currentTime=0;idlg.showModal();iv.play().catch(()=>{})});
+const ishut=()=>{iv.pause();if(idlg.open)idlg.close()};
+document.getElementById('introClose').addEventListener('click',ishut);
+idlg.addEventListener('click',e=>{if(e.target===idlg)ishut()});
+idlg.addEventListener('close',()=>{iv.pause();if(!still)bgv.play().catch(()=>{})});
+// Email: assembled here so scrapers don't harvest it.
+const m=['lucaspierce','hotmail.com'];document.getElementById('mail').href='mailto:'+m.join('@')+'?subject=Snake%20Magic';
 // Inline player on the real site; plain links where embeds are blocked (preview).
 const embedOK=!/claude|anthropic/i.test(location.hostname)&&location.protocol!=='file:';
 if(!embedOK)document.body.classList.add('is-preview');
