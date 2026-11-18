@@ -117,7 +117,7 @@ dialog::backdrop{background:rgba(0,0,0,.85)}
 </div></header>
 
 <main id="top">
-<section class="hero band"><video class="bgv" id="bgv" muted loop playsinline preload="metadata" poster="media/intro-poster.jpg" aria-hidden="true"><source src="media/intro.mp4" type="video/mp4"></video><div class="wrap">
+<section class="hero band"><video class="bgv" id="bgv" autoplay muted loop playsinline preload="metadata" poster="media/intro-poster.jpg" aria-hidden="true"><source src="media/intro.mp4" type="video/mp4"></video><div class="wrap">
   <div class="copy">
     <p class="tag">Comedy videos for the Internet</p>
     <h1>Your eyes look <a href="https://www.youtube.com/watch?v=6oKUTOLSeMM" target="_blank" rel="noopener">hungry.</a></h1>
@@ -233,7 +233,13 @@ q.addEventListener('input',()=>{const s=q.value.trim().toLowerCase();let n=0;for
 // Background + cast loops: only autoplay when motion is OK, pause when off-screen.
 const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const loops=[document.getElementById('bgv'),...document.querySelectorAll('.castcard video')];
-if(!still){const io=new IntersectionObserver(es=>es.forEach(e=>{e.isIntersecting?e.target.play().catch(()=>{}):e.target.pause()}));loops.forEach(v=>io.observe(v))}
+const seen=new Set();
+if(still){loops.forEach(v=>v.pause())}else{
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){seen.add(e.target);e.target.play().catch(()=>{})}else{seen.delete(e.target);e.target.pause()}}));
+  loops.forEach(v=>io.observe(v));
+  // Browsers refuse autoplay in a background tab; retry once the page is shown.
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!(idlg&&idlg.open))seen.forEach(v=>v.play().catch(()=>{}))});
+}
 // Intro with sound
 const idlg=document.getElementById('introdlg'),iv=document.getElementById('introv'),bgv=document.getElementById('bgv');
 document.getElementById('introBtn').addEventListener('click',()=>{bgv.pause();iv.currentTime=0;idlg.showModal();iv.play().catch(()=>{})});
