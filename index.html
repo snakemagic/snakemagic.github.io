@@ -60,6 +60,7 @@ nav a:hover,nav a:focus-visible{background:var(--panel);color:var(--yel);outline
 .ep0 figure img{width:100%;height:100%;object-fit:cover}
 .soon{position:absolute;left:12px;top:12px;background:rgba(0,0,0,.78);color:var(--yel);font-size:14px;font-weight:700;padding:6px 12px;border-radius:999px}
 .ep0 p{color:var(--mute);margin:12px 0 0}
+.ep0link{display:block;border-radius:12px}.ep0link figure{transition:transform .2s}.ep0link:hover figure,.ep0link:focus-visible figure{transform:scale(1.02)}.ep0link:hover .soon,.ep0link:focus-visible .soon{background:var(--red);color:#fff}
 /* grids */
 .head{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:28px}
 .head p{color:var(--mute);margin:8px 0 0;max-width:40em}
@@ -128,7 +129,7 @@ dialog::backdrop{background:rgba(0,0,0,.85)}
 
 <section class="band" id="episodes"><div class="wrap">
   <div class="ep0">
-    <figure><img src="img/ep/episode-0.jpg" alt="Snake Magic Episode 0 title card" loading="lazy"><span class="soon">Trailer coming back soon</span></figure>
+    <a class="ep0link" href="https://vimeo.com/156771371" target="_blank" rel="noopener" aria-label="Watch the Episode 0 trailer on Vimeo"><figure><img src="img/ep/episode-0.jpg" alt="Snake Magic Episode 0 title card" loading="lazy"><span class="soon">&#9654; Watch the trailer</span></figure></a>
     <div>
       <p class="tag">Episode 0</p>
       <h2>Scripted comedy will never be the same.</h2>
