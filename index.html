@@ -129,7 +129,7 @@ dialog::backdrop{background:rgba(0,0,0,.85)}
 
 <section class="band" id="episodes"><div class="wrap">
   <div class="ep0">
-    <a class="ep0link" href="https://vimeo.com/156771371" target="_blank" rel="noopener" aria-label="Watch the Episode 0 trailer on Vimeo"><figure><img src="img/ep/episode-0.jpg" alt="Snake Magic Episode 0 title card" loading="lazy"><span class="soon">&#9654; Watch the trailer</span></figure></a>
+    <a class="ep0link" href="https://vimeo.com/156771371" target="_blank" rel="noopener" data-src="vm" data-id="156771371" data-t="SnakeMagic.com Episode 0 Trailer" aria-label="Watch the Episode 0 trailer"><figure><img src="img/ep/episode-0.jpg" alt="Snake Magic Episode 0 title card" loading="lazy"><span class="soon">&#9654; Watch the trailer</span></figure></a>
     <div>
       <p class="tag">Episode 0</p>
       <h2>Scripted comedy will never be the same.</h2>
@@ -257,7 +257,7 @@ document.getElementById('close').addEventListener('click',shut);
 dlg.addEventListener('close',()=>{frame.innerHTML=''});
 dlg.addEventListener('click',e=>{if(e.target===dlg)shut()});
 document.addEventListener('click',e=>{
-  const a=e.target.closest('a.card');if(!a||!embedOK||!dlg.showModal)return;
+  const a=e.target.closest('a.card, a.ep0link');if(!a||!embedOK||!dlg.showModal)return;
   e.preventDefault();
   const url=a.dataset.src==='vm'?`https://player.vimeo.com/video/${a.dataset.id}?autoplay=1&dnt=1`:`https://www.youtube-nocookie.com/embed/${a.dataset.id}?autoplay=1&rel=0`;
   frame.innerHTML=`<iframe src="${url}" title="${a.dataset.t}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
